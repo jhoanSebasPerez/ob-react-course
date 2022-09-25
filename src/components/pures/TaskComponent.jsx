@@ -1,21 +1,53 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Task from '../../models/Task.class'
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import Task from "../../models/Task.class";
+import LEVELS from "../../models/Level.enum";
 
-const TaskComponent = ({task}) => {
+const TaskComponent = ({ task, removeTask, markAsCompleted }) => {
+  useEffect(() => {
+    console.log("Creating a new tasks...");
+    return () => {
+      console.log(`Remove ${task.name} from list`);
+    };
+  }, [task.name]);
+
+  const stylesBadge = {
+    [LEVELS.URGENT]: "warning",
+    [LEVELS.NORMAL]: "primary",
+    [LEVELS.BLOCKING]: "danger",
+  };
+
+  const stylesToggle = () =>
+    task.completed ? ["on", "green"] : ["off", "gray"];
+
   return (
-    <div>
-      <h2>{task.name}</h2>
-      <p>{task.description}</p>
-      <p>Level: {task.level}</p>
-      <p>{task.completed ? "COMPLETED" : "PENDING"}</p>
-      <p>Created at: {task.createdAt.toString()}</p>
-    </div>
-  )
-}
+    <tr
+      style={{ backgroundColor: task.completed ? "lightgreen" : "lightgray" }}
+    >
+      <th scope="row">{task.name}</th>
+      <td>{task.description}</td>
+      <td>
+        <span className={`badge bg-${stylesBadge[task.level]}`}>
+          {task.level}
+        </span>
+      </td>
+      <td>
+        <i
+          className={`bi-toggle-${stylesToggle()[0]}`}
+          style={{ color: stylesToggle()[1] }}
+          onClick={() => markAsCompleted(task.id)}
+        ></i>
+      </td>
+      <td>{task.createdAt.toDateString()}</td>
+      <td>
+        <i onClick={() => removeTask(task.id)} className="bi bi-trash-fill"></i>
+      </td>
+    </tr>
+  );
+};
 
 TaskComponent.propTypes = {
   task: PropTypes.instanceOf(Task),
-}
+};
 
-export default TaskComponent
+export default TaskComponent;

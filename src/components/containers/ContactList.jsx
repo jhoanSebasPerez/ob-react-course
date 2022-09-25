@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ContactComponent from "../pures/ContactComponent";
-import contacts from "../../data";
+import { contacts } from "../../data";
 
 const ContactList = () => {
   const [contactList, setContactLis] = useState(contacts);

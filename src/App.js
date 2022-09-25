@@ -1,14 +1,13 @@
-import logo from "./logo.svg";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import "./App.css";
-import ContactList from "./components/containers/ContactList";
+import TaskList from "./components/containers/TaskList";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <ContactList />
-      </header>
+      <h1>Task App</h1>
+      <TaskList />
     </div>
   );
 }
