@@ -1,0 +1,7 @@
+.icon{
+    cursor: pointer;
+}
+
+.remove-icon:hover{
+    color: red;
+}

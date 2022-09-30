@@ -8,8 +8,7 @@ const TaskList = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("Loading tasks");
-    //setLoading(false);
+    setTimeout(() => setLoading(false), 2000);
   }, []);
 
   const removeTask = (id) => {
@@ -33,30 +32,36 @@ const TaskList = () => {
     setTasks(copyTasks);
   };
 
-  return (
+  return loading ? (
+    <p>Loading...</p>
+  ) : (
     <>
-      <TaskForm addTask={addTask} />
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Description</th>
-            <th scope="col">Level</th>
-            <th scope="col">Completed</th>
-            <th scope="col">Created at</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tasks.map((task) => (
-            <TaskComponent
-              task={task}
-              key={task.id}
-              removeTask={removeTask}
-              markAsCompleted={markAsCompleted}
-            />
-          ))}
-        </tbody>
-      </table>
+      <TaskForm addTask={addTask} nTasks={tasks.length} />
+      {tasks.length === 0 ? (
+        <h3>There are no tasks</h3>
+      ) : (
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+              <th scope="col">Level</th>
+              <th scope="col">Completed</th>
+              <th scope="col">Created at</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tasks.map((task) => (
+              <TaskComponent
+                task={task}
+                key={task.id}
+                removeTask={removeTask}
+                markAsCompleted={markAsCompleted}
+              />
+            ))}
+          </tbody>
+        </table>
+      )}
     </>
   );
 };

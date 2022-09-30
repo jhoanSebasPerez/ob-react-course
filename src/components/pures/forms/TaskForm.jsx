@@ -1,42 +1,67 @@
-import React, { useRef } from "react";
+import React from "react";
 import Task from "../../../models/Task.class";
-import LEVELS from "../../../models/Level.enum";
+import { LEVELS, levelsValues } from "../../../models/Level.enum";
 import PropTypes from "prop-types";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
-const TaskForm = ({ addTask }) => {
-  const formRef = useRef(null);
+const taskSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(4, "Name too short")
+    .max(15, "Name too long")
+    .required(),
+  description: Yup.string().min(8, "Description too short").required(),
+  level: Yup.string().oneOf(levelsValues, "Level not available"),
+});
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formRef.current);
-    const newTask = new Task(
-      formRef.current.name.value,
-      formRef.current.description.value,
-      formRef.current.level.value
-    );
-    addTask(newTask);
-    cleanInputs();
+const TaskForm = ({ addTask, nTasks }) => {
+  const taskValues = {
+    name: "",
+    description: "",
+    level: LEVELS.NORMAL,
   };
 
-  const cleanInputs = () => {
-    formRef.current.name.value = "";
-    formRef.current.description.value = "";
+  const handleSubmit = async (values, formikBag) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const { name, description, level } = values;
+    const newTask = new Task(name, description, level);
+    addTask(newTask);
+    formikBag.resetForm();
   };
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit}>
-      <input type="text" name="name" placeholder="Name" />
-      <input type="text" name="description" placeholder="Description" />
-      <label htmlFor="levels">Choose a level:</label>
-      <select name="level" id="levels">
-        {Object.keys(LEVELS).map((key, index) => (
-          <option key={index} value={LEVELS[key]}>
-            {LEVELS[key]}
-          </option>
-        ))}
-      </select>
-      <input type="submit" value="Add task" className="btn btn-success" />
-    </form>
+    <Formik
+      initialValues={taskValues}
+      onSubmit={handleSubmit}
+      validationSchema={taskSchema}
+    >
+      {({ errors, touched }) => (
+        <Form>
+          <label htmlFor="name">Name:</label>
+          <Field id="name" name="name" type="text" />
+          {errors.name && touched.name && <ErrorMessage name="name" />}
+
+          <label htmlFor="description">Description:</label>
+          <Field id="description" name="description" type="text" />
+          {errors.description && touched.description && (
+            <ErrorMessage name="description" />
+          )}
+
+          <label htmlFor="levels">Level</label>
+          <Field id="levels" name="level" component="select" multiple={false}>
+            {levelsValues.map((level, index) => (
+              <option key={index} value={level}>
+                {level}
+              </option>
+            ))}
+          </Field>
+
+          <button type="submit" className="btn btn-success">
+            {nTasks > 0 ? "Add new task" : "Create your first task"}
+          </button>
+        </Form>
+      )}
+    </Formik>
   );
 };
 

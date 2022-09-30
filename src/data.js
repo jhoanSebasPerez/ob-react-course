@@ -1,5 +1,5 @@
 import Contact from "./models/Contact.class";
-import LEVELS from "./models/Level.enum";
+import { LEVELS } from "./models/Level.enum";
 import Task from "./models/Task.class";
 
 export const contacts = [
