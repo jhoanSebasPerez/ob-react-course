@@ -1,0 +1,23 @@
+.like{
+    color: rgb(62, 169, 62);
+} 
+
+.dislike{
+    color: rgb(255, 0, 0);
+} 
+
+.btn-like-dislike{
+    background-color: rgb(238, 236, 236);
+    width: 100px; 
+    height: 30px;
+    margin-top: 18px; 
+    cursor: pointer;
+} 
+
+.btn-like-dislike:hover{
+    background-color: rgb(170, 170, 170);
+} 
+
+.btn-like-dislike span {
+    margin-left: 15px;
+}

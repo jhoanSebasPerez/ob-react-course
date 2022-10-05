@@ -4,11 +4,12 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import TestRRD from "./test-react-router-dom/TestRRD";
+import ChuckJokes from "./components/pures/ChuckJokes";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <ChuckJokes />
   </React.StrictMode>
 );
 
